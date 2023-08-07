@@ -1,0 +1,242 @@
+prepare some variables
+    const items=document.querySelector('.todo__content__items')
+    const create =document.querySelector('.todo__create__new__btn')
+    const head =document.querySelector('.todo__content__head')
+    const form =document.querySelector('.taskmanager__form')
+    const cancel =document.querySelector('.cancel')
+    const dateDisplayed =document.querySelector('.todo__content__head__date')
+    const completed =document.querySelector('.completed')
+
+create event listner to display the input form
+    create.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleForm();
+    });
+
+    define toggle form at the top of list task
+
+        const toggleForm = () => {
+            items.style.display = 'none';
+            head.style.display = 'none';
+            create.style.display = 'none';
+            form.classList.toggle('hide');
+        };
+    
+create event listner to cancel the form
+    cancel.addEventListener('click', (e) => {
+        e.preventDefault();
+        cancelForm ();
+    });
+
+    define cancelForm at the top
+
+        const cancelForm = (e) => {
+            e.preventDefault();
+            items.style.display = 'block';
+            head.style.display = 'flex';
+            create.style.display = 'block';
+            form.classList.toggle('hide');
+        };
+
+define form submitter
+
+    * prepare event listner
+
+        form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        
+        })
+    
+    * define array to send and accept task data at the top of event listner
+
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    
+    * update array with new value
+
+        tasks.push({
+        task_name: task_name.value,
+        description: description.value,
+        date: date.value,
+        time: time.value,
+        id: tasks.length > 0 ? tasks[tasks.length - 1].id + 1 : 0,
+        task_status: task_status.value
+        });
+    
+    * update local storage with updated value
+
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    
+    * after updating the data remove the form from the screen and update screen with newly  added task 
+
+        toggleForm();
+        listTasks();
+
+
+    
+declare function listTasks(); to list tasks and call it at the bottom 
+     const listTasks = () => {
+
+     }
+     listTasks()
+
+    * check task lists comes inside function
+        console.log(tasks)
+    
+    * iterate through tasks
+        tasks.forEach((x)=>{
+        console.log(x)
+
+        })
+
+
+     #inside listTasks iteration
+        * create div element to hold single task
+
+            const task=document.createElement('div')
+            task.id = id;
+            task.classList.add("todo__content__single");
+
+
+        * make the innerHTML of created elemnt the html created 
+
+            task.innerHTML=` <div class="todo__content__single">
+                            <div class="todo__content__single__top">
+                                <div class="flex">
+                                    <div class="todo__content__single__checkbox complete">
+                                        <img src="./images/square-regular.svg"/>
+                                    </div>
+                                    <div class="todo__content__single__time">03:00 AM</div>
+                                </div>
+                                <div class="flex">
+                                    <div class="todo__content__single__edit hide"><img src="./images/pen-to-square-solid.svg" alt=""></div>
+                                    <div class="todo__content__single__delete hide"><img src="./images/trash-can-regular.svg" alt=""></div>
+                                    <div class="todo__content__single__more">
+                                    <img src="./images/ellipsis-solid.svg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="todo__content__single__title">Design website</div>
+                            <div class="todo__content__single__description hide">Design the home page with detailed text and images, prepare color pallate, </div>
+                            </div> `
+        * append task to items 
+            items.appendChild(task);
+
+        * destructure all variables in single task to use inside html
+            tasks.forEach(({id, task_name, description, date, time, task_status})...
+
+        * replace variables with iterated values
+                time,title and description like ${time}
+
+        *define event listner for more button
+
+            -- first place more icon on variable
+                const more = document.querySelectorAll('.todo__content__single__more');
+            --define event listner
+                 more.forEach((more) => {
+                    more.addEventListener('click', (e) => {
+                        e.target.parentElement.parentElement.children[0].classList.toggle('hide');
+                        e.target.parentElement.parentElement.children[1].classList.toggle('hide');
+                    });
+                });
+        
+
+        *define event listner for delete button
+            -- first place more icon on variable
+              const deletebtn = document.querySelectorAll('.todo__content__single__delete');
+
+            --define event listner
+                 deletebtn.forEach((deletebtn) => {
+                    deletebtn.addEventListener('click', (e) => {
+                    const taskId = e.target.parentElement.parentElement.parentElement.parentElement.id;
+                    const taskIndex = tasks.findIndex(task => task.id == Number(taskId));
+                    console.log(taskIndex)
+                    tasks.splice(taskIndex, 1);
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    listTasks();
+                    });
+                });
+        
+         *define event listner for edit button
+            -- first place more icon on variable
+                  const edit = document.querySelectorAll('.todo__content__single__edit');
+
+            --define event listner
+                edit.forEach((edit) => {
+                    edit.addEventListener('click', (e) => {
+                    const taskId = e.target.parentElement.parentElement.parentElement.parentElement.id;
+                    const task = tasks.find(task => task.id == Number(taskId));
+                    if (task) {
+                        toggleForm();
+                        document.querySelector('#submit').innerText="Update";
+                        cancel.classList.toggle('hide');
+                        const { task_name, description, date, time } = task;       
+                        document.querySelector('#task_name').value = task_name;
+                        document.querySelector('#description').value = description;
+                        document.querySelector('#date').value = date;
+                        document.querySelector('#time').value = time;
+                        tasks.splice(tasks.indexOf(task), 1);
+                        localStorage.setItem('tasks', JSON.stringify(tasks));
+                    }
+                    });
+                });
+
+        *define event listner for complete button
+            -- first place more icon on variable
+                  const complete = document.querySelectorAll('.todo__content__single__checkbox');
+
+            --define event listner
+                    complete.forEach((complete) => {
+                        complete.addEventListener('click', (e) => {
+                        const taskId = e.target.parentElement.parentElement.parentElement.parentElement.id;
+                        const task = tasks.find(task => task.id == taskId);
+                        if (task) {
+                            const { task_name, description, date, time } = task;
+                            tasks.splice(tasks.indexOf(task), 1);
+                            tasks.push({
+                            task_name,
+                            description,
+                            date,
+                            time,
+                            id: taskId,
+                            task_status: 'completed'
+                            });
+                            localStorage.setItem('tasks', JSON.stringify(tasks));
+                            listTasks();
+                        }
+                        });
+                    });
+        
+        *sort the listed items array
+
+             const sorter = (arr, propertyName, order) => {
+                    const sortedArr = arr.sort((a, b) => {
+                    if (a[propertyName] < b[propertyName]) {
+                        return -1;
+                    }
+                    if (a[propertyName] > b[propertyName]) {
+                        return 1;
+                    }
+                    return 0;
+                    });
+                
+                    if (order === 'descending') {
+                    return sortedArr.reverse();
+                    }
+                
+                    return sortedArr;
+                };
+            
+            sorter(tasks, "date" );
+
+
+
+
+
+
+
+
+
+
+
+
+

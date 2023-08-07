@@ -1,0 +1,135 @@
+*{
+    margin: 0;
+    padding:0
+}
+:root{
+    --primary:#1a1919;
+    --secondry:rgb(223, 91, 4);
+    --light:white;
+    --gray:rgb(180, 180, 180);
+    --completed:rgb(165, 211, 165);
+
+}
+body{
+    font-family: 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: var(--primary);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+.flex{
+    display: flex;
+    align-items: center;
+}
+
+.todo{
+    width:400px;
+    height:80vh;
+    background-color: var(--gray);
+    border-radius: 1rem;
+    padding: 1rem;
+}
+.todo__head{
+    border-top-left-radius:1rem ;
+    border-top-right-radius:1rem ;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.todo__content__items{
+    overflow-y: scroll;
+    height:66vh;
+}
+::-webkit-scrollbar{
+    display: none;
+}
+.todo__content__single{
+    background-color: var(--light);
+    margin:0.5rem 0;
+    border-radius: 0.5rem;
+    padding: 0.8rem;
+    color: black;
+}
+.todo__content__single__top{
+display: flex;
+justify-content: space-between;
+}
+.todo__content__head__btn{
+    cursor:pointer;
+}
+.todo__content__single__title{
+    font-weight: bold;
+    padding: 0.5rem 0;
+}
+.todo__content__single__description{
+    font-size: 0.8rem;
+}
+.todo__content__single img{
+    width:1rem;
+    padding-right: 0.5rem ;
+}
+.time{
+    font-weight: bold;
+}
+.active{
+    background-color: var(--secondry);
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    color: var(--light);
+}
+.todo__add__new{
+    margin-bottom: 1vh;
+    place-content: right;
+    display: flex;
+    justify-content: right;
+}
+.todo__add__new__btn{
+    width:fit-content;
+    border: none;
+    font-size: 1rem;
+}
+.taskmanager__form{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+.taskmanager__form input, .taskmanager__form textarea{
+    padding: 0.5rem ;
+    border-radius: 5px;
+}
+.add__task, .cancel{
+    border: none;
+    width:fit-content;
+    margin:auto;
+}
+.taskmanager__form .flex div{
+    width:50%;
+}
+.taskmanager__form .flex input{
+    width:150px;
+}
+.hide{
+    display: none;
+}
+
+.completed .todo__content__single__checkbox,.completed .todo__content__single__more,.completed .todo__content__single__description{
+    display: none;
+}
+.completed .todo__content__single__delete{
+    display: block;
+}
+.completed .todo__content__single__title{
+    text-decoration: line-through;
+}
+.completed{
+    background-color:var(--completed)
+}
+.todo__content__single__checkbox:hover .right{
+    display:block
+}
+.todo__content__single__checkbox:hover .box{
+    display:none
+}
